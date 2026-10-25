@@ -1,0 +1,47 @@
+RokuDev v1.2.2 — SVG + Bug Sweep
+
+Interface
+- Removidos símbolos Unicode/emoji usados como ícones visuais na interface própria do RokuDev.
+- Adicionados 20 SVGs locais para navegação, mídia, fullscreen, abas e ações.
+- Mantido o controle integrado à tela do simulador em retrato, paisagem e fullscreen.
+
+Correções principais
+- Importação de ZIP/BPK/BRS movida para thread de I/O para evitar congelamento/ANR ao copiar pacotes grandes.
+- Importação transacional: arquivo temporário é removido se houver falha e só entra em recentes após conclusão.
+- Limite de 512 MB por pacote e validação prévia quando o tamanho é informado pelo provedor Android.
+- Limpeza automática de arquivos `.part`, órfãos e referências de recentes que não existem mais.
+- IDs internos de pacotes agora usam UUID, evitando colisões em importações simultâneas.
+- Package Inspector limita quantidade de entradas/listagens para reduzir consumo de memória em ZIPs anormais.
+- Navegação principal do WebView fica restrita à origem local; páginas http/https são abertas fora do runtime com a ponte Android isolada.
+- `allowBackup=false` para não incluir pacotes e dados de desenvolvimento no backup do Android.
+- Android Back volta ao comportamento do sistema quando nenhum app Roku está rodando.
+- ACTION_SEND também aceita URI entregue por ClipData.
+- Compartilhamento de logs agora trata ausência/falha de aplicativo de compartilhamento.
+
+ECP
+- Pool de clientes limitado e fila limitada, evitando criação ilimitada de threads.
+- Limites básicos de tamanho de request/header.
+- `Lit_<caractere>` preserva maiúsculas e espaço codificado corretamente.
+- Adicionados Backspace e Enter ao normalizador de teclas.
+- Endereço exibido prioriza interfaces LAN/Wi-Fi/Ethernet antes de interfaces celulares/VPN.
+
+Runtime web
+- Corrigida referência inválida `data.url` no erro de caminho `file://`.
+- Conversão Base64 de imagens grandes passou a trabalhar em blocos para evitar `Maximum call stack size exceeded`.
+- Seletor de arquivo trata cancelamento/seleção vazia.
+- Console passa a capturar `console.debug` junto dos demais níveis.
+- D-pad touch usa pointer capture/lostpointercapture para reduzir risco de tecla ficar pressionada após gesto interrompido.
+- Duplo toque para fullscreen agora usa o mesmo contêiner do botão fullscreen, preservando o controle flutuante.
+- Removido handler duplicado dos cards de exemplos que podia disparar dois carregamentos do mesmo app.
+
+Validação
+- `node --check` em `index.js` e `mobile.js`.
+- HTML verificado para IDs duplicados, tabs inconsistentes e assets ausentes.
+- Todos os 20 SVGs validados como XML.
+- Manifest/values/themes Android validados como XML.
+- Varredura de emoji/símbolos de ícone na UI própria: limpa.
+- `javac` usado como sanity check de sintaxe; este ambiente não possui Android SDK, portanto não foi possível compilar o APK aqui.
+- Bundles de terceiros do brs-engine/brs-scenegraph não foram alterados.
+
+Limitação conhecida
+- O fluxo `roku_browser` para páginas locais `file:///pkg_...` continua dependente do BrowserFS. A versão web original o obtém por CDN; o RokuDev não inclui essa dependência remota para preservar execução offline/isolada. URLs http/https são abertas pelo navegador Android.

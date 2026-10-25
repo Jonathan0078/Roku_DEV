@@ -1,0 +1,10 @@
+RokuDev v1.2.2-buildfix1
+
+Build fixes:
+- Enables AndroidX (required by androidx.webkit:webkit:1.18.0).
+- Android Studio variant updated to Android Gradle Plugin 9.0.1.
+- AGP 9.0.1 is compatible with Gradle 9.1+; this matches the Gradle 9.3.0 environment shown in the reported build log.
+- Keeps compileSdk/targetSdk 35 and Java 17.
+- versionCode 7 / versionName 1.2.2-buildfix1.
+
+The repeated debugAndroidTest configuration failures in the previous build were secondary/cascade failures after an unsupported build-tool combination and disabled AndroidX.

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0d11" />
+  <title>RokuDev</title>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="mobile.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="images/icon.png" alt="RokuDev" />
+        <div>
+          <strong>RokuDev</strong>
+          <small>Roku Simulator · v1.2.5</small>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="orientationButton" class="ghost icon-button" type="button" title="Alternar orientação" aria-label="Alternar orientação"><img class="ui-icon" src="images/ui/rotate.svg" alt="" /></button>
+        <button id="fullscreenButton" class="ghost icon-button" type="button" title="Tela simulada em tela cheia" aria-label="Tela simulada em tela cheia"><img class="ui-icon" src="images/ui/fullscreen.svg" alt="" /></button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section id="tab-simulator" class="tab-view active" data-tab-view="simulator">
+        <div class="simulator-layout">
+          <section class="panel screen-panel">
+            <div class="screen-frame" id="screenFrame">
+              <canvas id="display" width="854" height="480" tabindex="0" aria-label="Tela Roku simulada"></canvas>
+              <video id="player" playsinline crossorigin="anonymous"></video>
+              <div id="loading" class="loading" aria-hidden="true"><div class="spinner"></div><span>Carregando aplicativo…</span></div>
+              <div id="stats"></div>
+
+              <div class="fullscreen-remote-overlay" aria-label="Controle flutuante em tela cheia">
+                <button class="remote-key fs-up holdable" data-key="up" aria-label="Cima"><img class="remote-icon" src="images/ui/up.svg" alt="" /></button>
+                <button class="remote-key fs-left holdable" data-key="left" aria-label="Esquerda"><img class="remote-icon" src="images/ui/left.svg" alt="" /></button>
+                <button class="remote-key fs-ok" data-key="select" aria-label="OK">OK</button>
+                <button class="remote-key fs-right holdable" data-key="right" aria-label="Direita"><img class="remote-icon" src="images/ui/right.svg" alt="" /></button>
+                <button class="remote-key fs-down holdable" data-key="down" aria-label="Baixo"><img class="remote-icon" src="images/ui/down.svg" alt="" /></button>
+                <button class="remote-key fs-back" data-key="back" aria-label="Voltar"><img class="remote-icon" src="images/ui/back.svg" alt="" /></button>
+              </div>
+            </div>
+
+            <div class="app-meta">
+              <div class="app-identification">
+                <div id="appInfo" class="app-info">Nenhum aplicativo carregado</div>
+                <div class="engine-info">Engine v<span id="libVersion">—</span> · <span id="profileLabel">720p</span></div>
+              </div>
+              <div class="run-actions">
+                <input type="file" id="file" accept=".zip,.bpk,.brs,application/zip" hidden />
+                <input type="button" id="fileButton" class="primary" value="Abrir pacote" />
+                <button id="reloadButton" class="ghost with-icon" type="button" disabled><img class="button-icon" src="images/ui/reload.svg" alt="" />Recarregar</button>
+                <button id="closeAppButton" class="danger" type="button">Fechar</button>
+              </div>
+            </div>
+
+            <section class="coreflix-update" aria-label="Atualização do CoreFlix">
+              <strong>CoreFlix Roku</strong>
+              <p id="coreflixUpdateMessage" role="status" aria-live="polite">Consulte novas versões no site Jonathan Sistemas.</p>
+              <div class="run-actions">
+                <button id="coreflixCheckUpdate" class="ghost" type="button">Verificar atualização</button>
+                <button id="coreflixInstallUpdate" class="primary" type="button" hidden>Baixar e abrir</button>
+              </div>
+            </section>
+            <div id="lastErrorCard" class="error-card" hidden>
+              <div><strong>Último erro</strong><button id="dismissErrorButton" class="text-button" type="button">fechar</button></div>
+              <pre id="lastErrorText"></pre>
+            </div>
+          </section>
+
+          <aside class="panel quick-remote" aria-label="Controle de navegação junto ao simulador">
+            <div class="remote-title"><strong>Navegação</strong><span class="badge">tela + controle</span></div>
+
+            <div class="remote-row three quick-top-row">
+              <button class="remote-key secondary" data-key="back"><img class="remote-icon" src="images/ui/back.svg" alt="" /><span>Voltar</span></button>
+              <button class="remote-key secondary" data-key="home"><img class="remote-icon" src="images/ui/home.svg" alt="" /><span>Início</span></button>
+              <button class="remote-key secondary" data-key="info"><img class="remote-icon" src="images/ui/options.svg" alt="" /><span>Opções</span></button>
+            </div>
+
+            <div class="mini-dpad">
+              <button class="remote-key up holdable" data-key="up"><img class="remote-icon" src="images/ui/up.svg" alt="" /></button>
+              <button class="remote-key left holdable" data-key="left"><img class="remote-icon" src="images/ui/left.svg" alt="" /></button>
+              <button class="remote-key ok" data-key="select">OK</button>
+              <button class="remote-key right holdable" data-key="right"><img class="remote-icon" src="images/ui/right.svg" alt="" /></button>
+              <button class="remote-key down holdable" data-key="down"><img class="remote-icon" src="images/ui/down.svg" alt="" /></button>
+            </div>
+
+            <div class="remote-row three compact-row">
+              <button class="remote-key" data-key="rev"><img class="remote-icon" src="images/ui/rewind.svg" alt="" /><span>Retroceder</span></button>
+              <button class="remote-key" data-key="play"><img class="remote-icon" src="images/ui/play-pause.svg" alt="" /><span>Play</span></button>
+              <button class="remote-key" data-key="fwd"><img class="remote-icon" src="images/ui/fast-forward.svg" alt="" /><span>Avançar</span></button>
+            </div>
+          </aside>
+
+          <section class="panel package-panel">
+            <details class="recent-panel" open>
+              <summary>Pacotes recentes</summary>
+              <div id="recentPackages" class="recent-list"><span class="muted">Nenhum pacote recente.</span></div>
+            </details>
+
+            <details class="examples-panel">
+              <summary>Exemplos incluídos</summary>
+              <div class="example-grid">
+                <button class="example-card" data-example="0"><img id="app01" /><span>Rect Bounce</span></button>
+                <button class="example-card" data-example="1"><img id="app02" /><span>Ball Boing</span></button>
+                <button class="example-card" data-example="2"><img id="app03" /><span>Collisions</span></button>
+                <button class="example-card" data-example="3"><img id="app04" /><span>Video Player</span></button>
+              </div>
+            </details>
+          </section>
+        </div>
+      </section>
+      <section id="tab-control" class="tab-view" data-tab-view="control">
+        <section class="panel remote-panel" aria-label="Controle remoto Roku">
+          <div class="remote-title"><strong>Controle Roku</strong><span id="isolationBadge" class="badge">verificando…</span></div>
+          <div class="remote-row three top-remote-row">
+            <button class="remote-key secondary" data-key="back"><img class="remote-icon" src="images/ui/back.svg" alt="" /><span>Voltar</span></button>
+            <button class="remote-key secondary" data-key="home"><img class="remote-icon" src="images/ui/home.svg" alt="" /><span>Início</span></button>
+            <button class="remote-key secondary" data-key="info"><img class="remote-icon" src="images/ui/options.svg" alt="" /><span>Opções</span></button>
+          </div>
+          <div class="dpad">
+            <button class="remote-key up holdable" data-key="up" aria-label="Cima"><img class="remote-icon" src="images/ui/up.svg" alt="" /></button>
+            <button class="remote-key left holdable" data-key="left" aria-label="Esquerda"><img class="remote-icon" src="images/ui/left.svg" alt="" /></button>
+            <button class="remote-key ok" data-key="select" aria-label="OK">OK</button>
+            <button class="remote-key right holdable" data-key="right" aria-label="Direita"><img class="remote-icon" src="images/ui/right.svg" alt="" /></button>
+            <button class="remote-key down holdable" data-key="down" aria-label="Baixo"><img class="remote-icon" src="images/ui/down.svg" alt="" /></button>
+          </div>
+          <div class="remote-row three media-row">
+            <button class="remote-key" data-key="rev"><img class="remote-icon" src="images/ui/rewind.svg" alt="" /><span>Retroceder</span></button>
+            <button class="remote-key" data-key="play"><img class="remote-icon" src="images/ui/play-pause.svg" alt="" /><span>Play/Pause</span></button>
+            <button class="remote-key" data-key="fwd"><img class="remote-icon" src="images/ui/fast-forward.svg" alt="" /><span>Avançar</span></button>
+          </div>
+          <div class="remote-row two">
+            <button class="remote-key" data-key="instantreplay"><img class="remote-icon" src="images/ui/replay.svg" alt="" /><span>Replay</span></button>
+            <button class="remote-key" data-key="select"><img class="remote-icon" src="images/ui/select.svg" alt="" /><span>Selecionar</span></button>
+          </div>
+          <div class="hardware-hint">Teclado/controle Bluetooth: D-pad, Enter, Back, mídia e Menu são mapeados para o Roku.</div>
+        </section>
+      </section>
+
+      <section id="tab-console" class="tab-view" data-tab-view="console">
+        <section class="panel console-panel standalone">
+          <div class="page-title"><div><strong>Console</strong><small>BrightScript / SceneGraph em tempo real</small></div><span class="badge">debug</span></div>
+          <div class="console-filters" role="group" aria-label="Filtro do console">
+            <button class="console-filter active" data-filter="all" type="button">Todos</button>
+            <button class="console-filter" data-filter="info" type="button">Info</button>
+            <button class="console-filter" data-filter="warn" type="button">Warn</button>
+            <button class="console-filter" data-filter="error" type="button">Erro</button>
+          </div>
+          <div class="console-actions">
+            <button id="clearConsoleButton" type="button">Limpar</button>
+            <button id="copyConsoleButton" type="button">Copiar</button>
+            <button id="saveConsoleButton" type="button">Salvar</button>
+            <button id="shareConsoleButton" type="button">Compartilhar</button>
+          </div>
+          <pre id="consoleOutput">RokuDev iniciado.</pre>
+        </section>
+      </section>
+
+      <section id="tab-devtools" class="tab-view" data-tab-view="devtools">
+        <section class="panel tools-panel standalone">
+          <div class="page-title"><div><strong>Dev Tools</strong><small>Runtime, ECP e Package Inspector</small></div><span id="ecpBadge" class="badge">carregando…</span></div>
+
+          <div class="tool-section profile-card">
+            <div class="section-heading"><strong>Perfil de dispositivo</strong><span class="badge">display</span></div>
+            <select id="deviceProfile">
+              <option value="480p">480p · SD 4:3</option>
+              <option value="720p">720p · HD</option>
+              <option value="1080p">1080p · Full HD</option>
+            </select>
+            <small>Mudar o perfil reinicia o runtime do simulador.</small>
+          </div>
+
+          <div class="tool-section">
+            <div class="section-heading"><strong>ECP · porta 8060</strong><button id="copyEcpButton" class="mini-button" type="button">Copiar</button></div>
+            <code id="ecpAddress">—</code>
+            <small>POST /keypress, /keydown e /keyup; GET /query/device-info, /query/active-app e /query/apps.</small>
+          </div>
+
+          <div class="tool-section">
+            <div class="section-heading"><strong>Runtime</strong><button id="refreshRuntimeButton" class="text-button" type="button">atualizar</button></div>
+            <div id="runtimeInfo" class="runtime-grid"></div>
+          </div>
+
+          <div class="tool-section package-inspector">
+            <div class="section-heading"><strong>Package Inspector</strong><span id="packageType" class="badge">—</span></div>
+            <div id="packageSummary" class="inspector-summary muted">Abra um pacote para inspecionar manifest, componentes e scripts.</div>
+            <details id="manifestDetails"><summary>Manifest</summary><pre id="manifestOutput">—</pre></details>
+            <details id="componentsDetails"><summary>Componentes / scripts</summary><pre id="componentsOutput">—</pre></details>
+            <details id="filesDetails"><summary>Arquivos</summary><pre id="filesOutput">—</pre></details>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="legal-note">Baseado no projeto open source brs-engine (MIT). RokuDev é uma ferramenta independente para desenvolvimento e testes.</footer>
+  </div>
+
+  <nav class="bottom-tabs" aria-label="Navegação principal">
+    <button class="tab-button active" data-tab="simulator" type="button"><img class="tab-icon" src="images/ui/simulator.svg" alt="" /><small>Simulador</small></button>
+    <button class="tab-button" data-tab="control" type="button"><img class="tab-icon" src="images/ui/remote.svg" alt="" /><small>Controle</small></button>
+    <button class="tab-button" data-tab="console" type="button"><img class="tab-icon" src="images/ui/console.svg" alt="" /><small>Console</small></button>
+    <button class="tab-button" data-tab="devtools" type="button"><img class="tab-icon" src="images/ui/settings.svg" alt="" /><small>Dev Tools</small></button>
+  </nav>
+
+  <div id="expand-new" hidden></div><div id="expand" hidden></div><div id="collapse" hidden></div><div id="details" hidden></div>
+
+  <dialog id="passwordDialog" class="modal_dialog">
+    <form method="dialog" name="passwordForm">
+      <h3>Pacote protegido</h3><p>Digite a senha para descriptografar o arquivo BPK.</p>
+      <input type="password" name="password" id="password" autocomplete="off" />
+      <div class="dialog-actions"><button value="cancel" class="ghost">Cancelar</button><button value="ok" class="primary">Abrir</button></div>
+    </form>
+  </dialog>
+
+  <script src="lib/brs.api.js"></script>
+  <script src="index.js"></script>
+  <script src="mobile.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+RokuDev v1.2.1 — Navegação integrada
+
+- Tela Roku e controle permanecem visíveis ao mesmo tempo na aba Simulador.
+- Retrato: display em cima e controle compacto logo abaixo.
+- Paisagem: display à esquerda e controle compacto à direita.
+- Controle completo continua disponível na aba Controle.
+- Fullscreen ganhou D-pad/OK/Voltar flutuante sobre a tela simulada.
+- Informações do app foram compactadas em uma única linha.
+- Pacotes recentes e exemplos foram movidos para depois da área de navegação.
+- Ajustes de altura para evitar que a barra inferior cubra o controle em paisagem.
+- Mantidos ECP, Package Inspector, Console, perfis 480p/720p/1080p e suporte Bluetooth.

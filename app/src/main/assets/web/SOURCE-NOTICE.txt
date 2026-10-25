@@ -1,0 +1,3 @@
+RokuDev embeds the brs-engine browser runtime.
+The brs-engine source and license remain under their original MIT terms.
+RokuDev is an independent development/testing tool and is not an official Roku application.
