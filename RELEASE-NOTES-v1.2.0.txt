@@ -1,0 +1,9 @@
+RokuDev 1.2.0
+
+- Rebranding completo de BRS Mobile Simulator para RokuDev.
+- Novo ícone.
+- Navegação inferior por abas.
+- Simulador, Controle, Console e Dev Tools separados.
+- Controle rápido em paisagem.
+- Melhor aproveitamento da tela do celular.
+- ECP, Package Inspector, Runtime e pacotes recentes preservados.
